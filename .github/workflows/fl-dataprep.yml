@@ -42,7 +42,7 @@ jobs:
         az ml data create --workspace-name Asia-Hospital3 \
                           --name pneumonia-central \
                           --path /tmp/chest_xray_tvt \
-                          --type mltable
+                          --type uri_folder
 
         stages=( train test val )
         classes=(COVID Lung_Opacity NORMAL PNEUMONIA TURBERCULOSIS)
@@ -70,14 +70,14 @@ jobs:
         az ml data create --workspace-name Asia-Hospital3 \
                           --name pneumonia-dataset \
                           --path /tmp/chest_xray_asia \
-                          --type mltable
+                          --type uri_folder
 
         az ml data create --workspace-name Europe-Hospital3 \
                           --name pneumonia-dataset \
                           --path /tmp/chest_xray_europe \
-                          --type mltable
+                          --type uri_folder
 
         az ml data create --workspace-name US-Hospital3 \
                           --name pneumonia-dataset \
                           --path /tmp/chest_xray_us \
-                          --type mltable
+                          --type uri_folder
