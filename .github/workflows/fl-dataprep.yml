@@ -40,7 +40,7 @@ jobs:
 
         # store central dataset to asia hospital
         az ml data create --workspace-name Asia-Hospital3 \
-                          --name pneumonia-central2 \
+                          --name pneumonia-central \
                           --path /tmp/chest_xray_tvt \
                           --type uri_folder
 
