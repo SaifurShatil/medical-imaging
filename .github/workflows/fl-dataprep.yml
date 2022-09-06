@@ -32,8 +32,8 @@ jobs:
         # Download the Pneumonia dataset
         pip install kaggle
         pip install split-folders
-        kaggle datasets download -d paultimothymooney/chest-xray-pneumonia -p /tmp
-        unzip -q /tmp/chest-xray-pneumonia.zip -d /tmp
+        kaggle datasets download -d saifurrahmanshatil/multiclass-chest-xray-disease-dataset -p /tmp
+        unzip -q /tmp/multiclass-chest-xray-disease-dataset.zip -d /tmp
 
         # split in train, val and test
         splitfolders --output /tmp/chest_xray_tvt/ --ratio .8 .1 .1 --seed 33 --move -- /tmp/chest_xray/train
@@ -45,7 +45,7 @@ jobs:
                           --type uri_folder
 
         stages=( train test val )
-        classes=( PNEUMONIA NORMAL)
+        classes=(COVID Lung_Opacity NORMAL PNEUMONIA TURBERCULOSIS)
 
         # Create folders
         for client in "${clients[@]}"; do
@@ -70,14 +70,14 @@ jobs:
         az ml data create --workspace-name Asia-Hospital3 \
                           --name pneumonia-dataset \
                           --path /tmp/chest_xray_asia \
-                          --type uri_folder
+                          --type mltable
 
         az ml data create --workspace-name Europe-Hospital3 \
                           --name pneumonia-dataset \
                           --path /tmp/chest_xray_europe \
-                          --type uri_folder
+                          --type mltable
 
         az ml data create --workspace-name US-Hospital3 \
                           --name pneumonia-dataset \
                           --path /tmp/chest_xray_us \
-                          --type uri_folder
+                          --type mltable
