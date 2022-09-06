@@ -42,7 +42,7 @@ jobs:
         az ml data create --workspace-name Asia-Hospital3 \
                           --name pneumonia-central \
                           --path /tmp/chest_xray_tvt \
-                          --type uri_folder
+                          --type mltable
 
         stages=( train test val )
         classes=(COVID Lung_Opacity NORMAL PNEUMONIA TURBERCULOSIS)
