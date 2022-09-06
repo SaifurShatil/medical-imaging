@@ -40,7 +40,7 @@ jobs:
 
         # store central dataset to asia hospital
         az ml data create --workspace-name Asia-Hospital3 \
-                          --name pneumonia-central \
+                          --name pneumonia-central2 \
                           --path /tmp/chest_xray_tvt \
                           --type uri_folder
 
@@ -68,16 +68,16 @@ jobs:
 
         #Upload data assets
         az ml data create --workspace-name Asia-Hospital3 \
-                          --name pneumonia-dataset \
+                          --name pneumonia-dataset2 \
                           --path /tmp/chest_xray_asia \
                           --type uri_folder
 
         az ml data create --workspace-name Europe-Hospital3 \
-                          --name pneumonia-dataset \
+                          --name pneumonia-dataset2 \
                           --path /tmp/chest_xray_europe \
                           --type uri_folder
 
         az ml data create --workspace-name US-Hospital3 \
-                          --name pneumonia-dataset \
+                          --name pneumonia-dataset2 \
                           --path /tmp/chest_xray_us \
                           --type uri_folder
