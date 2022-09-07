@@ -26,58 +26,48 @@ jobs:
         clients=( europe asia us)
         export KAGGLE_USERNAME=${{ secrets.KAGGLE_USERNAME }}
         export KAGGLE_KEY=${{ secrets.KAGGLE_PASSWORD }}
-
         az configure --defaults group="${{ github.event.inputs.resource_group }}"
-
         # Download the Pneumonia dataset
         pip install kaggle
         pip install split-folders
-        kaggle datasets download -d jtiptj/chest-xray-pneumoniacovid19tuberculosis -p /tmp
-        unzip -q /tmp/chest-xray-pneumoniacovid19tuberculosis.zip -d /tmp
-
+        kaggle datasets download -d saifurrahmanshatil/multiclass-chest-xray-disease-dataset -p /tmp
+        unzip -q /tmp/multiclass-chest-xray-disease-dataset.zip -d /tmp
         # split in train, val and test
-        splitfolders --output /tmp/chest_xray_new/ --ratio .8 .1 .1 --seed 33 --move -- /tmp/train
-
+        splitfolders --output /tmp/lung1_xray_tvt/ --ratio .8 .1 .1 --seed 33 --move -- /tmp/chest_xray/train
         # store central dataset to asia hospital
-        az ml data create --workspace-name Asia-Hospital3 \
-                          --name pneumonia-central3 \
-                          --path /tmp/chest_xray_new \
+        az ml data create --workspace-name Asia-Hospital \
+                          --name lung1-central \
+                          --path /tmp/lung1_xray_tvt \
                           --type uri_folder
-
         stages=( train test val )
-        classes=(COVID19 NORMAL PNEUMONIA TURBERCULOSIS)
-
+        classes=( COVID Lung_Opacity NORMAL PNEUMONIA TURBERCULOSIS )
         # Create folders
         for client in "${clients[@]}"; do
-            mkdir /tmp/chest_xray1_$client
+            mkdir /tmp/lung1_xray_$client
             for stage in "${stages[@]}"; do
-                mkdir /tmp/chest_xray1_$client/$stage
+                mkdir /tmp/lung1_xray_$client/$stage
                 for class in "${classes[@]}"; do
-                    mkdir /tmp/chest_xray1_$client/$stage/$class
+                    mkdir /tmp/lung1_xray_$client/$stage/$class
                 done
             done
         done
-
         # Copy data to client folders
         i=0
-        for file in $(find /tmp/chest_xray_new -name '*.jpeg'); do
+        for file in $(find /tmp/lung1_xray_tvt -name '*.jpeg'); do
             classnr=$(( i % 3 ))
-            cp $file ${file/chest_xray_new/chest_xray1_${clients[classnr]}}
+            cp $file ${file/lung1_xray_tvt/lung1_xray_${clients[classnr]}}
             i=$((i+1))
         done
-
         #Upload data assets
-        az ml data create --workspace-name Asia-Hospital3 \
-                          --name pneumonia-dataset3 \
-                          --path /tmp/chest_xray1_asia \
+        az ml data create --workspace-name Asia-Hospital \
+                          --name lung1-dataset \
+                          --path /tmp/lung1_xray_asia \
                           --type uri_folder
-
-        az ml data create --workspace-name Europe-Hospital3 \
-                          --name pneumonia-dataset3 \
-                          --path /tmp/chest_xray1_europe \
+        az ml data create --workspace-name Europe-Hospital \
+                          --name lung1-dataset \
+                          --path /tmp/lung1_xray_europe \
                           --type uri_folder
-
-        az ml data create --workspace-name US-Hospital3 \
-                          --name pneumonia-dataset3 \
-                          --path /tmp/chest_xray1_us \
+        az ml data create --workspace-name US-Hospital \
+                          --name lung1-dataset \
+                          --path /tmp/lung1_xray_us \
                           --type uri_folder
