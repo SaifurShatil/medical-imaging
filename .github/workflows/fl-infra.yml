@@ -6,7 +6,7 @@ on:
       resource_group:
         description: 'Resource group name'
         required: true
-        default: 'fedlearn' 
+        default: 'fedlearn2' 
         type: string
 
 jobs:
@@ -20,7 +20,7 @@ jobs:
     - name: Azure login
       uses: azure/login@v1
       with:
-        creds: ${{secrets.AZURE_CREDENTIALS}}
+        creds: ${{secrets.AZURE_CREDENTIALS2}}
     - name: Provision resources
       run: |
         az configure --defaults group="${{ github.event.inputs.resource_group }}"
@@ -30,11 +30,11 @@ jobs:
 
         az vm open-port -n clivm --port 8002-8003 --priority 100
 
-        az ml workspace create -n Asia-Hospital3 --location japaneast
-        az ml compute create --type ComputeInstance --name FedClientAsia3 --workspace-name Asia-Hospital3
+        az ml workspace create -n Asia-Hospital4 --location japaneast
+        az ml compute create --type ComputeInstance --name FedClientAsia4 --workspace-name Asia-Hospital3
 
-        az ml workspace create -n Europe-Hospital3 --location northeurope
-        az ml compute create --type ComputeInstance --name FedClientEurope3 --workspace-name Europe-Hospital3
+        az ml workspace create -n Europe-Hospital4 --location northeurope
+        az ml compute create --type ComputeInstance --name FedClientEurope4 --workspace-name Europe-Hospital3
 
-        az ml workspace create -n US-Hospital3 --location eastus2
-        az ml compute create --type ComputeInstance --name FedClientUS3 --workspace-name US-Hospital3
+        az ml workspace create -n US-Hospital4 --location eastus2
+        az ml compute create --type ComputeInstance --name FedClientUS4 --workspace-name US-Hospital3
