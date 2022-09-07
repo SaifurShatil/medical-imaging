@@ -61,7 +61,7 @@ jobs:
         # Copy data to client folders
         i=0
         for file in $(find /tmp/chest_xray_new -name '*.jpeg'); do
-            classnr=$(( i % 5 ))
+            classnr=$(( i % 3 ))
             cp $file ${file/chest_xray_new/chest_xray1_${clients[classnr]}}
             i=$((i+1))
         done
