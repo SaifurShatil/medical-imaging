@@ -35,7 +35,7 @@ jobs:
         # split in train, val and test
         splitfolders --output /tmp/lung1_xray_tvt/ --ratio .8 .1 .1 --seed 33 --move -- /tmp/chest_xray/train
         # store central dataset to asia hospital
-        az ml data create --workspace-name Asia-Hospital \
+        az ml data create --workspace-name Asia-Hospital3 \
                           --name lung1-central \
                           --path /tmp/lung1_xray_tvt \
                           --type uri_folder
@@ -59,15 +59,15 @@ jobs:
             i=$((i+1))
         done
         #Upload data assets
-        az ml data create --workspace-name Asia-Hospital \
+        az ml data create --workspace-name Asia-Hospital3 \
                           --name lung1-dataset \
                           --path /tmp/lung1_xray_asia \
                           --type uri_folder
-        az ml data create --workspace-name Europe-Hospital \
+        az ml data create --workspace-name Europe-Hospital3 \
                           --name lung1-dataset \
                           --path /tmp/lung1_xray_europe \
                           --type uri_folder
-        az ml data create --workspace-name US-Hospital \
+        az ml data create --workspace-name US-Hospital3 \
                           --name lung1-dataset \
                           --path /tmp/lung1_xray_us \
                           --type uri_folder
